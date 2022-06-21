@@ -1,0 +1,15 @@
+body {
+    font-family: sans-serif;
+    background-color: #222;
+    color: #0a0;
+}
+
+.card-handle {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100px;
+    height: 200px;
+    border: 2px solid #f00;
+    background-color: #333;
+}
