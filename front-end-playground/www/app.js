@@ -1,14 +1,47 @@
 window.addEventListener("load", () => {
+    let mainCtrl = new CardController();
     let btn = document.createElement("button");
     btn.textContent = "new card";
     btn.addEventListener("click", (e) => {
-        let sample = new Card();
+        let sample = new Card(mainCtrl);
         document.body.append(sample.handle);
     });
     document.body.append(btn);
 });
 
 let activeCard = null;
+
+class CardController {
+    constructor() {
+        this.activeCard = null;
+        let onMouseMove = (e) => this.onMouseMove(e);
+        window.addEventListener("mousemove", onMouseMove);
+    }
+
+    onMouseMove(e) {
+        if(this.activeCard !== null)
+            this.activeCard.grabMove(e);
+    }
+
+    clearActive() {
+        if(this.activeCard !== null) {
+            this.activeCard.handle.classList.remove("active")
+        }
+        this.activeCard = null;
+    }
+
+    setActive(card) {
+        this.clearActive();
+        if(card !== null) {
+            this.activeCard = card;
+            card.handle.classList.add("active");
+        }
+    }
+
+    getActive() {
+        return this.activeCard;
+    }
+}
 
 window.addEventListener("mousemove", (e) => {
     if(activeCard !== null) {
@@ -20,7 +53,8 @@ class Card {
     static classNames = {
         handle: "card-handle",
     };
-    constructor() {
+    constructor(controller) {
+        this.controller = controller;
         let handle = this.handle = document.createElement("div");
         handle.className = Card.classNames.handle;
         handle.addEventListener("mousedown", (e) => this.grabStart(e));
@@ -42,11 +76,13 @@ class Card {
         this.handle.style["z-index"] = 1;
         let pos = this.getPos();
         this.mouse_offset = {x: e.pageX - pos.x, y: e.pageY - pos.y};
+        this.controller.setActive(this);
         activeCard = this;
     }
 
     grabEnd(e) {
         this.handle.style["z-index"] = 0;
+        this.controller.clearActive();
         activeCard = null;
     }
 
