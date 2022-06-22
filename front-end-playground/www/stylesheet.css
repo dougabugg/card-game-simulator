@@ -4,16 +4,28 @@ body {
     color: #0a0;
 }
 
+.card-slot, .card-handle {
+    width: 100px;
+    height: 150px;
+}
+
 .card-handle {
     position: absolute;
     top: 0;
     left: 0;
-    width: 100px;
-    height: 200px;
     border: 2px solid #f00;
     background-color: #333;
+    cursor: grab;
+}
+
+.card-slot {
+    border: 2px solid #333;
+    background-color: #111;
 }
 
 .card-handle.active {
     border-color: yellow;
+    box-shadow: 0px 0px 15px 5px #000;
+    transform: scale(1.05, 1.05);
+    cursor: grabbing;
 }
